@@ -1,0 +1,32 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2312                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      transportProperties;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+//
+// Aluminum (A1050 / pure aluminum) at ~25 degC:
+//   thermal conductivity  kappa  = 205   W/(m·K)
+//   density               rho    = 2700  kg/m^3
+//   specific heat         Cp     = 900   J/(kg·K)
+//   thermal diffusivity   DT     = kappa/(rho*Cp)
+//                                = 205 / (2700 * 900)
+//                                = 8.418e-5 m^2/s
+//
+// laplacianFoam solves: dT/dt = div(DT * grad(T))
+// so only DT is required here.
+//
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+DT              DT [0 2 -1 0 0 0 0] 8.418e-05;
+
+// ************************************************************************* //

@@ -1,0 +1,7 @@
+#!/bin/sh
+# Run script for E-shaped aluminum heat dissipation simulation
+cd "${0%/*}" || exit 1
+. "${WM_PROJECT_DIR:?}/bin/tools/RunFunctions"
+
+runApplication blockMesh
+runApplication $(getApplication)

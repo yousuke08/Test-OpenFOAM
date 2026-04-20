@@ -1,0 +1,6 @@
+#!/bin/sh
+# Clean script for E-shaped aluminum heat dissipation simulation
+cd "${0%/*}" || exit 1
+. "${WM_PROJECT_DIR:?}/bin/tools/CleanFunctions"
+
+cleanCase

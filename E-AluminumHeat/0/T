@@ -1,0 +1,49 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2312                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volScalarField;
+    object      T;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [0 0 0 1 0 0 0];   // Temperature [K]
+
+internalField   uniform 293.15;    // Initial: 20 degC (ambient)
+
+boundaryField
+{
+    base
+    {
+        // Heat source: 100 degC (e.g. power device mounting face)
+        type            fixedValue;
+        value           uniform 373.15;
+    }
+
+    cooled
+    {
+        // Simplified convective cooling: surfaces held at ambient 20 degC
+        // For finite-h convection replace with externalWallHeatFluxTemperature
+        type            fixedValue;
+        value           uniform 293.15;
+    }
+
+    front
+    {
+        type            symmetryPlane;
+    }
+
+    back
+    {
+        type            symmetryPlane;
+    }
+}
+
+// ************************************************************************* //
