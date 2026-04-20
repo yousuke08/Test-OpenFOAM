@@ -35,7 +35,7 @@ endTime         200;
 
 deltaT          0.5;
 
-writeControl    adjustableRunTime;
+writeControl    runTime;
 writeInterval   20;
 
 purgeWrite      0;
@@ -48,28 +48,6 @@ timePrecision   6;
 
 runTimeModifiable true;
 
-functions
-{
-    // Compute total heat flux entering through the base and leaving through cooled faces
-    baseHeatFlux
-    {
-        type            surfaceFieldValue;
-        libs            (fieldFunctionObjects);
-        writeControl    timeStep;
-        writeInterval   10;
-        log             true;
-        regionType      patch;
-        name            base;
-        operation       sum;
-        fields          (wallHeatFlux);
-    }
-
-    residuals
-    {
-        type            solverInfo;
-        libs            (utilityFunctionObjects);
-        fields          (T);
-    }
-}
+// functions block intentionally empty (v1912 compatibility)
 
 // ************************************************************************* //
