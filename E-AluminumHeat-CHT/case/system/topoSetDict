@@ -1,0 +1,93 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v1912                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      topoSetDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+actions
+(
+    // ----------------------------------------------------------------
+    // aluminum cellSet: backbone + 3 fins
+    // ----------------------------------------------------------------
+    {
+        name    aluminum;
+        type    cellSet;
+        action  new;
+        source  boxToCell;
+        sourceInfo { box (0 0 -1)(0.10 0.02 1); }   // backbone full width
+    }
+    {
+        name    aluminum;
+        type    cellSet;
+        action  add;
+        source  boxToCell;
+        sourceInfo { box (0    0.02 -1)(0.02 0.10 1); }  // left fin
+    }
+    {
+        name    aluminum;
+        type    cellSet;
+        action  add;
+        source  boxToCell;
+        sourceInfo { box (0.04 0.02 -1)(0.06 0.10 1); }  // middle fin
+    }
+    {
+        name    aluminum;
+        type    cellSet;
+        action  add;
+        source  boxToCell;
+        sourceInfo { box (0.08 0.02 -1)(0.10 0.10 1); }  // right fin
+    }
+    // Convert to cellZone
+    {
+        name    aluminum;
+        type    cellZoneSet;
+        action  new;
+        source  setToCellZone;
+        sourceInfo { set aluminum; }
+    }
+
+    // ----------------------------------------------------------------
+    // air cellSet: 2 gaps + region above fins
+    // ----------------------------------------------------------------
+    {
+        name    air;
+        type    cellSet;
+        action  new;
+        source  boxToCell;
+        sourceInfo { box (0.02 0.02 -1)(0.04 0.10 1); }  // left gap
+    }
+    {
+        name    air;
+        type    cellSet;
+        action  add;
+        source  boxToCell;
+        sourceInfo { box (0.06 0.02 -1)(0.08 0.10 1); }  // right gap
+    }
+    {
+        name    air;
+        type    cellSet;
+        action  add;
+        source  boxToCell;
+        sourceInfo { box (0 0.10 -1)(0.10 0.20 1); }     // above fins
+    }
+    // Convert to cellZone
+    {
+        name    air;
+        type    cellZoneSet;
+        action  new;
+        source  setToCellZone;
+        sourceInfo { set air; }
+    }
+);
+
+// ************************************************************************* //

@@ -1,0 +1,47 @@
+#!/bin/bash
+set -e
+
+export WM_PROJECT_DIR=/usr/share/openfoam
+
+CASE_DIR="$(cd "$(dirname "$0")" && pwd)"
+cd "$CASE_DIR"
+
+echo "========================================================"
+echo " E-AluminumHeat CHT — conjugate heat transfer"
+echo " fins pointing UP, natural convection"
+echo "========================================================"
+
+echo ""
+echo ">>> [1/5] blockMesh"
+WM_PROJECT_DIR=/usr/share/openfoam blockMesh 2>&1 | tail -5
+
+echo ""
+echo ">>> [2/5] topoSet  (define aluminum / air cell zones)"
+WM_PROJECT_DIR=/usr/share/openfoam topoSet 2>&1 | tail -5
+
+echo ""
+echo ">>> [3/5] splitMeshRegions -cellZones -overwrite"
+WM_PROJECT_DIR=/usr/share/openfoam splitMeshRegions -cellZones -overwrite 2>&1 | tail -10
+
+echo ""
+echo "=== Aluminum boundary patches ==="
+grep -A2 "type" constant/aluminum/polyMesh/boundary | grep -v "^--$" | head -40
+
+echo ""
+echo "=== Air boundary patches ==="
+grep -A2 "type" constant/air/polyMesh/boundary | grep -v "^--$" | head -40
+
+echo ""
+echo ">>> [4/5] Copying initial conditions from 0.orig/"
+cp -r 0.orig/aluminum 0/aluminum
+cp -r 0.orig/air      0/air
+
+echo ""
+echo ">>> [5/5] chtMultiRegionFoam"
+WM_PROJECT_DIR=/usr/share/openfoam chtMultiRegionFoam 2>&1 | tee log.chtMultiRegionFoam
+
+echo ""
+echo "========================================================"
+echo " Done.  Time directories:"
+ls -d [0-9]* 2>/dev/null | sort -n
+echo "========================================================"

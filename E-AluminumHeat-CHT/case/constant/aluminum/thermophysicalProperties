@@ -1,0 +1,57 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v1912                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "constant/aluminum";
+    object      thermophysicalProperties;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+//
+// Aluminum 6061:
+//   rho  = 2700 kg/m³
+//   Cp   = 900  J/(kg·K)
+//   kappa= 205  W/(m·K)
+//   DT   = kappa/(rho*Cp) = 205/(2700*900) = 8.42e-5 m²/s
+//
+
+thermoType
+{
+    type            heSolidThermo;
+    mixture         pureMixture;
+    transport       constIso;
+    thermo          hConst;
+    equationOfState rhoConst;
+    specie          specie;
+    energy          sensibleEnthalpy;
+}
+
+mixture
+{
+    specie
+    {
+        molWeight   26.98;
+    }
+    transport
+    {
+        kappa       205;
+    }
+    thermodynamics
+    {
+        Cp          900;
+        Hf          0;
+    }
+    equationOfState
+    {
+        rho         2700;
+    }
+}
+
+// ************************************************************************* //

@@ -1,0 +1,49 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v1912                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      controlDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+//
+// Conjugate heat transfer: E-shaped Al heatsink with natural convection.
+//   Backbone at bottom (heat source y=0, T=100°C), fins pointing up.
+//   Air fills the gaps and region above fins.
+//   Gravity: g = (0 -9.81 0)  →  buoyancy drives upward flow in gaps.
+//
+//   Ra ~ 1.6e6 (laminar), steady state reached in ~100-200 s.
+//
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+application     chtMultiRegionFoam;
+
+startFrom       startTime;
+startTime       0;
+
+stopAt          endTime;
+endTime         200;
+
+deltaT          0.05;
+
+writeControl    runTime;
+writeInterval   20;
+
+purgeWrite      0;
+writeFormat     ascii;
+writePrecision  6;
+writeCompression off;
+
+timeFormat      fixed;
+timePrecision   0;
+
+runTimeModifiable true;
+
+// ************************************************************************* //
