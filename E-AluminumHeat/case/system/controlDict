@@ -1,0 +1,57 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2312                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      controlDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+//
+// Transient heat conduction in E-shaped aluminum.
+//
+// Diffusion time scale: t ~ L^2 / DT
+//   L   = 0.08 m (fin length, longest conduction path)
+//   DT  = 8.418e-5 m^2/s
+//   t   ~ 0.08^2 / 8.418e-5 ~ 76 s   (to reach steady state)
+//
+// Refined mesh (2.5 mm cells). Diffusion time for dx=0.0025m:
+//   t ~ dx^2/DT = 0.0025^2 / 8.418e-5 ~ 0.07 s → run to t=1.0 s
+//
+// timeFormat fixed + timePrecision 1  →  0.1/ 0.2/ ... 1.0/
+//   all folder names have the same width → sort correctly
+//
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+application     laplacianFoam;
+
+startFrom       startTime;
+startTime       0;
+
+stopAt          endTime;
+endTime         1.0;
+
+deltaT          0.01;
+
+writeControl    runTime;
+writeInterval   0.1;
+
+purgeWrite      0;
+writeFormat     ascii;
+writePrecision  6;
+writeCompression off;
+
+timeFormat      fixed;
+timePrecision   1;
+
+runTimeModifiable true;
+
+// functions block intentionally empty (v1912 compatibility)
+
+// ************************************************************************* //
