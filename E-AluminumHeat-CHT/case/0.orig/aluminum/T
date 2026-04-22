@@ -23,9 +23,10 @@ boundaryField
 {
     base
     {
-        // Heat source: 100°C
-        type            fixedValue;
-        value           uniform 373.15;
+        // Heat flux BC: gradient = Q[W] / (A[m²] * kappa[W/m/K])
+        // Updated automatically by scripts/set_heat.py before each run.
+        type            fixedGradient;
+        gradient        uniform 24.39;   // placeholder (10 W default)
     }
 
     left
