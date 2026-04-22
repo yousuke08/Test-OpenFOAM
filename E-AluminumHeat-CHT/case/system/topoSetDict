@@ -80,6 +80,20 @@ actions
         source  boxToCell;
         sourceInfo { box (0 0.10 -1)(0.10 0.20 1); }     // above fins
     }
+    {
+        name    air;
+        type    cellSet;
+        action  add;
+        source  boxToCell;
+        sourceInfo { box (-0.1 0 -1)(0 0.20 1); }        // left side column
+    }
+    {
+        name    air;
+        type    cellSet;
+        action  add;
+        source  boxToCell;
+        sourceInfo { box (0.10 0 -1)(0.2 0.20 1); }      // right side column
+    }
     // Convert to cellZone
     {
         name    air;

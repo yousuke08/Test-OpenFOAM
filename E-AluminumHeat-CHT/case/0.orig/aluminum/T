@@ -35,18 +35,6 @@ boundaryField
         type            zeroGradient;
     }
 
-    left
-    {
-        // Outer end-cap of backbone/fin: adiabatic
-        type            zeroGradient;
-    }
-
-    right
-    {
-        // Fin tip outer wall: adiabatic
-        type            zeroGradient;
-    }
-
     front
     {
         type            empty;

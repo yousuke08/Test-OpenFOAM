@@ -32,13 +32,19 @@ boundaryField
         value           uniform 101325;
     }
 
-    left
+    left_open
     {
-        type            fixedFluxPressure;
+        type            fixedValue;
         value           uniform 101325;
     }
 
-    right
+    right_open
+    {
+        type            fixedValue;
+        value           uniform 101325;
+    }
+
+    base_side
     {
         type            fixedFluxPressure;
         value           uniform 101325;

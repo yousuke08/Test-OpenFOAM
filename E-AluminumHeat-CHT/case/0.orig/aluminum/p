@@ -32,16 +32,6 @@ boundaryField
         type            calculated;
         value           uniform 101325;
     }
-    left
-    {
-        type            calculated;
-        value           uniform 101325;
-    }
-    right
-    {
-        type            calculated;
-        value           uniform 101325;
-    }
     front
     {
         type            empty;

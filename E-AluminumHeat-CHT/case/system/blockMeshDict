@@ -127,6 +127,28 @@ vertices
     (0.0515 0.02   0.02) // 61
     (0.0515 0.10   0.02) // 62
     (0.0515 0.20   0.02) // 63
+
+    // new vertices for left/right air side columns
+    // x=-0.1, z=0
+    (-0.1   0      0)   // 64
+    (-0.1   0.02   0)   // 65
+    (-0.1   0.10   0)   // 66
+    (-0.1   0.20   0)   // 67
+    // x=0.2, z=0
+    (0.2    0      0)   // 68
+    (0.2    0.02   0)   // 69
+    (0.2    0.10   0)   // 70
+    (0.2    0.20   0)   // 71
+    // x=-0.1, z=0.02
+    (-0.1   0      0.02) // 72
+    (-0.1   0.02   0.02) // 73
+    (-0.1   0.10   0.02) // 74
+    (-0.1   0.20   0.02) // 75
+    // x=0.2, z=0.02
+    (0.2    0      0.02) // 76
+    (0.2    0.02   0.02) // 77
+    (0.2    0.10   0.02) // 78
+    (0.2    0.20   0.02) // 79
 );
 
 blocks
@@ -178,6 +200,16 @@ blocks
     hex (15 16 22 21  39 40 46 45)  (4 10 1) simpleGrading (1 1 1)
     // Block 14: col4
     hex (16 17 23 22  40 41 47 46)  (4 10 1) simpleGrading (1 1 1)
+
+    // ---- Left air side column x=[-0.1, 0] ----
+    hex (64 0  6  65  72 24 30 73)  (10 4  1) simpleGrading (1 1 1)
+    hex (65 6  12 66  73 30 36 74)  (10 16 1) simpleGrading (1 1 1)
+    hex (66 12 18 67  74 36 42 75)  (10 10 1) simpleGrading (1 1 1)
+
+    // ---- Right air side column x=[0.1, 0.2] ----
+    hex (5  68 69 11  29 76 77 35)  (10 4  1) simpleGrading (1 1 1)
+    hex (11 69 70 17  35 77 78 41)  (10 16 1) simpleGrading (1 1 1)
+    hex (17 70 71 23  41 78 79 47)  (10 10 1) simpleGrading (1 1 1)
 );
 
 boundary
@@ -207,27 +239,38 @@ boundary
         );
     }
 
-    left
+    left_open
     {
-        // x=0 wall (backbone left + left fin outer + air-above left)
+        // x=-0.1 outer boundary — open to ambient
         type patch;
         faces
         (
-            (0  24 30  6)   // B0 left
-            (6  30 36 12)   // B5 left
-            (12 36 42 18)   // B10 left
+            (64 65 73 72)   // left col row0
+            (65 66 74 73)   // left col row1
+            (66 67 75 74)   // left col row2
         );
     }
 
-    right
+    right_open
     {
-        // x=0.1 wall (backbone right + right fin tip + air-above right)
+        // x=0.2 outer boundary — open to ambient
         type patch;
         faces
         (
-            (5  11 35 29)   // B4 right
-            (11 17 41 35)   // B9 right
-            (17 23 47 41)   // B14 right
+            (68 69 77 76)   // right col row0
+            (69 70 78 77)   // right col row1
+            (70 71 79 78)   // right col row2
+        );
+    }
+
+    base_side
+    {
+        // y=0 bottom of left/right air columns — adiabatic floor
+        type patch;
+        faces
+        (
+            (64  0  24 72)  // left col bottom
+            (5  68  76 29)  // right col bottom
         );
     }
 
@@ -237,6 +280,7 @@ boundary
         type patch;
         faces
         (
+            (67 75 42 18)   // left col top
             (18 42 43 19)   // B10 top
             (19 43 44 20)   // B11 top
             (20 44 59 51)   // B12a top
@@ -244,6 +288,7 @@ boundary
             (55 63 45 21)   // B12c top
             (21 45 46 22)   // B13 top
             (22 46 47 23)   // B14 top
+            (23 47 79 71)   // right col top
         );
     }
 
@@ -253,6 +298,9 @@ boundary
         type empty;
         faces
         (
+            (64 65  6   0)   // left col row0
+            (65 66 12   6)   // left col row1
+            (66 67 18  12)   // left col row2
             (0   6   7   1)   // B0
             (1   7   8   2)   // B1
             (2   8  49  48)   // B2a
@@ -274,6 +322,9 @@ boundary
             (54 55  21  15)   // B12c
             (15 21  22  16)   // B13
             (16 22  23  17)   // B14
+            (5  11  69  68)   // right col row0
+            (11 17  70  69)   // right col row1
+            (17 23  71  70)   // right col row2
         );
     }
 
@@ -283,6 +334,9 @@ boundary
         type empty;
         faces
         (
+            (72 24 30 73)   // left col row0
+            (73 30 36 74)   // left col row1
+            (74 36 42 75)   // left col row2
             (24 25 31 30)   // B0
             (25 26 32 31)   // B1
             (26 56 57 32)   // B2a
@@ -304,6 +358,9 @@ boundary
             (62 39 45 63)   // B12c
             (39 40 46 45)   // B13
             (40 41 47 46)   // B14
+            (29 76 77 35)   // right col row0
+            (35 77 78 41)   // right col row1
+            (41 78 79 47)   // right col row2
         );
     }
 );

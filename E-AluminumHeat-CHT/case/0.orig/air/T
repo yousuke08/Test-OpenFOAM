@@ -29,13 +29,21 @@ boundaryField
         value           uniform 293.15;
     }
 
-    left
+    left_open
     {
-        // Side wall of air domain above fins
-        type            zeroGradient;
+        type            inletOutlet;
+        inletValue      uniform 293.15;
+        value           uniform 293.15;
     }
 
-    right
+    right_open
+    {
+        type            inletOutlet;
+        inletValue      uniform 293.15;
+        value           uniform 293.15;
+    }
+
+    base_side
     {
         type            zeroGradient;
     }

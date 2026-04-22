@@ -27,13 +27,19 @@ boundaryField
         value           uniform 101325;
     }
 
-    left
+    left_open
     {
         type            calculated;
         value           uniform 101325;
     }
 
-    right
+    right_open
+    {
+        type            calculated;
+        value           uniform 101325;
+    }
+
+    base_side
     {
         type            calculated;
         value           uniform 101325;

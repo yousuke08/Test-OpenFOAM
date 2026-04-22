@@ -28,12 +28,19 @@ boundaryField
         value           uniform (0 0 0);
     }
 
-    left
+    left_open
     {
-        type            noSlip;
+        type            pressureInletOutletVelocity;
+        value           uniform (0 0 0);
     }
 
-    right
+    right_open
+    {
+        type            pressureInletOutletVelocity;
+        value           uniform (0 0 0);
+    }
+
+    base_side
     {
         type            noSlip;
     }
