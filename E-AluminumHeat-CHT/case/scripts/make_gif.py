@@ -133,7 +133,7 @@ def make_frame(t):
     fig.patch.set_facecolor("#1a1a2e")
     fig.suptitle(
         f"E-shape Al Heatsink — Conjugate Heat Transfer + Natural Convection\n"
-        f"Fins pointing UP  |  base = 100 °C  |  ambient = 20 °C  |  t = {t} s",
+        f"Fins pointing UP  |  hotspot 2.5 W (ø3 mm)  |  ambient = 20 °C  |  t = {t} s",
         fontsize=11, fontweight='bold', color='white')
 
     levels_al  = np.linspace(al_vmin,  al_vmax,  21)
@@ -160,7 +160,7 @@ def make_frame(t):
     for pts in al_outline:
         ax.add_patch(plt.Polygon(pts, fill=False, edgecolor='cyan',
                                  linewidth=0.8, linestyle='--', alpha=0.7))
-    ax.text(0.05, 0.01, "100°C", ha='center', va='center',
+    ax.text(0.05, 0.01, "hotspot\n2.5 W", ha='center', va='center',
             fontsize=7, color='cyan')
     ax.set_xlabel("x [m]"); ax.set_ylabel("y [m]")
     ax.set_xlim(-0.002, 0.102); ax.set_ylim(-0.002, 0.102)
@@ -182,13 +182,13 @@ def make_frame(t):
         ax.quiver(cx_air[::step], cy_air[::step],
                   U_air[::step, 0], U_air[::step, 1],
                   color='white', alpha=0.75, scale_units='xy', scale=4)
-        ax.text(0.001, 0.195, f"|U|max = {spd.max():.3f} m/s",
+        ax.text(-0.095, 0.195, f"|U|max = {spd.max():.3f} m/s",
                 fontsize=7, color='white', va='top')
     for pts in al_outline:
         ax.add_patch(plt.Polygon(pts, fill=True, facecolor='#3a3a5c',
                                  edgecolor='white', linewidth=0.7, alpha=0.5))
     ax.set_xlabel("x [m]"); ax.set_ylabel("y [m]")
-    ax.set_xlim(-0.002, 0.102); ax.set_ylim(-0.002, 0.202)
+    ax.set_xlim(-0.102, 0.202); ax.set_ylim(-0.002, 0.202)
     ax.set_aspect("equal")
 
     plt.tight_layout()
