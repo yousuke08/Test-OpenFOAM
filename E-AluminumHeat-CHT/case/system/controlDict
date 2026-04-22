@@ -29,7 +29,7 @@ startFrom       startTime;
 startTime       0;
 
 stopAt          endTime;
-endTime         200;
+endTime         400;
 
 deltaT          0.05;
 
