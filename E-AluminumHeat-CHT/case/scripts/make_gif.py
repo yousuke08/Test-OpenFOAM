@@ -182,13 +182,13 @@ def make_frame(t):
         ax.quiver(cx_air[::step], cy_air[::step],
                   U_air[::step, 0], U_air[::step, 1],
                   color='white', alpha=0.75, scale_units='xy', scale=4)
-        ax.text(-0.095, 0.195, f"|U|max = {spd.max():.3f} m/s",
+        ax.text(-0.495, 0.490, f"|U|max = {spd.max():.3f} m/s",
                 fontsize=7, color='white', va='top')
     for pts in al_outline:
         ax.add_patch(plt.Polygon(pts, fill=True, facecolor='#3a3a5c',
                                  edgecolor='white', linewidth=0.7, alpha=0.5))
     ax.set_xlabel("x [m]"); ax.set_ylabel("y [m]")
-    ax.set_xlim(-0.102, 0.202); ax.set_ylim(-0.002, 0.202)
+    ax.set_xlim(-0.502, 0.602); ax.set_ylim(-0.002, 0.502)
     ax.set_aspect("equal")
 
     plt.tight_layout()
