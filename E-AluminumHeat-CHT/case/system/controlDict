@@ -26,15 +26,15 @@ FoamFile
 application     chtMultiRegionFoam;
 
 startFrom       startTime;
-startTime       0;
+startTime       1800;
 
 stopAt          endTime;
-endTime         1800;
+endTime         1950;
 
 deltaT          0.05;
 
 writeControl    runTime;
-writeInterval   20;
+writeInterval   0.5;
 
 purgeWrite      0;
 writeFormat     ascii;
@@ -42,7 +42,7 @@ writePrecision  6;
 writeCompression off;
 
 timeFormat      fixed;
-timePrecision   0;
+timePrecision   1;
 
 runTimeModifiable true;
 

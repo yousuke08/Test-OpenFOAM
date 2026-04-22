@@ -13,10 +13,10 @@ import os, re
 CASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 def latest_time():
-    times = [int(d) for d in os.listdir(CASE)
-             if d.isdigit() and int(d) > 0
-             and os.path.isdir(os.path.join(CASE, d))]
-    return str(max(times)) if times else None
+    dirs = [d for d in os.listdir(CASE)
+            if re.match(r'^\d+\.?\d*$', d) and float(d) > 0
+            and os.path.isdir(os.path.join(CASE, d))]
+    return max(dirs, key=lambda x: float(x)) if dirs else None
 
 TIME = latest_time()
 if TIME is None:
@@ -165,7 +165,7 @@ if U_air.shape[0] > 1:
 fig, axes = plt.subplots(1, 2, figsize=(14, 9))
 fig.suptitle(
     f"E-shape Al Heatsink — Conjugate Heat Transfer + Natural Convection\n"
-    f"Fins pointing UP  |  base = 100 °C  |  ambient = 20 °C  |  t = {TIME} s",
+    f"Fins pointing UP  |  hotspot 2.5 W (ø3 mm)  |  ambient = 20 °C  |  t = {float(TIME):.1f} s",
     fontsize=12, fontweight='bold')
 
 al_outline = [

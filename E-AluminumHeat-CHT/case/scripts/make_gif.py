@@ -15,14 +15,15 @@ CASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT_DIR = os.path.join(CASE, "results")
 os.makedirs(OUT_DIR, exist_ok=True)
 
-# collect time steps (skip t=0 which has no fields)
+# collect time steps (skip t=0 which has no fields); handles both "20" and "1800.5"
 times = sorted(
-    [int(d) for d in os.listdir(CASE)
-     if d.isdigit() and int(d) > 0
+    [d for d in os.listdir(CASE)
+     if re.match(r'^\d+\.?\d*$', d) and float(d) > 0
      and os.path.isdir(os.path.join(CASE, d, "air"))
-     and os.path.isfile(os.path.join(CASE, d, "air", "T"))]
+     and os.path.isfile(os.path.join(CASE, d, "air", "T"))],
+    key=lambda x: float(x)
 )
-print(f"Frames: {times}")
+print(f"Frames: {len(times)} ({times[0]} – {times[-1]})")
 
 
 # ── parser (reused from viz_cht.py) ─────────────────────────────────────────
@@ -133,7 +134,7 @@ def make_frame(t):
     fig.patch.set_facecolor("#1a1a2e")
     fig.suptitle(
         f"E-shape Al Heatsink — Conjugate Heat Transfer + Natural Convection\n"
-        f"Fins pointing UP  |  hotspot 2.5 W (ø3 mm)  |  ambient = 20 °C  |  t = {t} s",
+        f"Fins pointing UP  |  hotspot 2.5 W (ø3 mm)  |  ambient = 20 °C  |  t = {float(t):.1f} s",
         fontsize=11, fontweight='bold', color='white')
 
     levels_al  = np.linspace(al_vmin,  al_vmax,  21)
