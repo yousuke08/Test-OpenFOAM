@@ -22,7 +22,12 @@ internalField   uniform 101325;
 
 boundaryField
 {
-    base
+    base_hotspot
+    {
+        type            calculated;
+        value           uniform 101325;
+    }
+    base_adiabatic
     {
         type            calculated;
         value           uniform 101325;

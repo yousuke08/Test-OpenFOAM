@@ -21,12 +21,18 @@ internalField   uniform 293.15;
 
 boundaryField
 {
-    base
+    base_hotspot
     {
-        // Heat flux BC: gradient = Q[W] / (A[m²] * kappa[W/m/K])
+        // 3mm-diameter concentrated heat source.
+        // gradient = Q[W] / (A[m²] * kappa[W/m/K])
         // Updated automatically by scripts/set_heat.py before each run.
         type            fixedGradient;
-        gradient        uniform 24.39;   // placeholder (10 W default)
+        gradient        uniform 203.2520;   // placeholder (2.5 W default)
+    }
+
+    base_adiabatic
+    {
+        type            zeroGradient;
     }
 
     left

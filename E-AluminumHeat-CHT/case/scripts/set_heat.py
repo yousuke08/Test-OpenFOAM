@@ -127,7 +127,7 @@ def main():
     args = parser.parse_args()
 
     Q = args.watts
-    A = patch_area(POLY, "base")
+    A = patch_area(POLY, "base_hotspot")
     q = Q / A
     gradient = q / KAPPA   # positive: heat into solid at base patch
 
@@ -139,14 +139,12 @@ def main():
     with open(T_FILE, "r") as f:
         content = f.read()
 
-    new_content = re.sub(
-        r"(gradient\s+uniform\s+)[-+]?\d*\.?\d+(?:[eE][-+]?\d+)?(\s*;)",
-        rf"\g<1>{gradient:.4f}\2",
-        content,
-    )
+    pattern = r"(gradient\s+uniform\s+)[-+]?\d*\.?\d+(?:[eE][-+]?\d+)?(\s*;)"
 
-    if new_content == content:
+    if not re.search(pattern, content):
         raise RuntimeError("Could not find 'gradient uniform ...' line to replace.")
+
+    new_content = re.sub(pattern, rf"\g<1>{gradient:.4f}\2", content)
 
     with open(T_FILE, "w") as f:
         f.write(new_content)

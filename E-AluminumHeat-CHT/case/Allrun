@@ -5,7 +5,7 @@ set -e
 
 export WM_PROJECT_DIR=/usr/share/openfoam
 
-HEAT_WATTS="${HEAT_WATTS:-10}"
+HEAT_WATTS="${HEAT_WATTS:-2.5}"
 
 CASE_DIR="$(cd "$(dirname "$0")" && pwd)"
 cd "$CASE_DIR"
