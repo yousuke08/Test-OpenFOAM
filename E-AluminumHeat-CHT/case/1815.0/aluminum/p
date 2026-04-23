@@ -1,0 +1,51 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:                                        |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volScalarField;
+    location    "1815.0/aluminum";
+    object      p;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [1 -1 -2 0 0 0 0];
+
+
+internalField   uniform 101325;
+
+boundaryField
+{
+    base_hotspot
+    {
+        type            calculated;
+        value           uniform 101325;
+    }
+    base_adiabatic
+    {
+        type            calculated;
+        value           uniform 101325;
+    }
+    front
+    {
+        type            empty;
+    }
+    back
+    {
+        type            empty;
+    }
+    aluminum_to_air
+    {
+        type            calculated;
+        value           uniform 101325;
+    }
+}
+
+
+// ************************************************************************* //
