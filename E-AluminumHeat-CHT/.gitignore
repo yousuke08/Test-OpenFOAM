@@ -1,0 +1,8 @@
+# OpenFOAM generated mesh and result data
+case/constant/polyMesh/
+case/constant/aluminum/polyMesh/
+case/constant/air/polyMesh/
+case/constant/cellToRegion
+case/[1-9]*/
+case/0/
+case/log.*

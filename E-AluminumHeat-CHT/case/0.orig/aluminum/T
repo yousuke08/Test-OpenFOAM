@@ -1,0 +1,58 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v1912                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volScalarField;
+    location    "0/aluminum";
+    object      T;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [0 0 0 1 0 0 0];
+
+internalField   uniform 293.15;
+
+boundaryField
+{
+    base_hotspot
+    {
+        // 3mm-diameter concentrated heat source.
+        // gradient = Q[W] / (A[m²] * kappa[W/m/K])
+        // Updated automatically by scripts/set_heat.py before each run.
+        type            fixedGradient;
+        gradient        uniform 203.2520;   // placeholder (2.5 W default)
+    }
+
+    base_adiabatic
+    {
+        type            zeroGradient;
+    }
+
+    front
+    {
+        type            empty;
+    }
+
+    back
+    {
+        type            empty;
+    }
+
+    // Coupled interface to air region (name assigned by splitMeshRegions)
+    ".*_to_air"
+    {
+        type            compressible::turbulentTemperatureCoupledBaffleMixed;
+        Tnbr            T;
+        kappaMethod     solidThermo;
+        value           uniform 293.15;
+    }
+}
+
+// ************************************************************************* //

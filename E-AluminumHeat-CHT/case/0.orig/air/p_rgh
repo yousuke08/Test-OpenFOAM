@@ -1,0 +1,70 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v1912                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volScalarField;
+    location    "0/air";
+    object      p_rgh;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+//
+// p_rgh = p - rho*g*h  (modified pressure, hydrostatic head removed)
+// Reference pressure 101325 Pa at top boundary.
+//
+
+dimensions      [1 -1 -2 0 0 0 0];
+
+internalField   uniform 101325;
+
+boundaryField
+{
+    top
+    {
+        // Fixed reference pressure at open boundary
+        type            fixedValue;
+        value           uniform 101325;
+    }
+
+    left_open
+    {
+        type            fixedValue;
+        value           uniform 101325;
+    }
+
+    right_open
+    {
+        type            fixedValue;
+        value           uniform 101325;
+    }
+
+    base_side
+    {
+        type            fixedFluxPressure;
+        value           uniform 101325;
+    }
+
+    front
+    {
+        type            empty;
+    }
+
+    back
+    {
+        type            empty;
+    }
+
+    ".*_to_aluminum"
+    {
+        type            fixedFluxPressure;
+        value           uniform 101325;
+    }
+}
+
+// ************************************************************************* //

@@ -1,0 +1,61 @@
+#!/bin/bash
+# Usage: bash Allrun               → default 10 W
+#        HEAT_WATTS=50 bash Allrun → 50 W heat input
+set -e
+
+export WM_PROJECT_DIR=/usr/share/openfoam
+
+HEAT_WATTS="${HEAT_WATTS:-2.5}"
+
+CASE_DIR="$(cd "$(dirname "$0")" && pwd)"
+cd "$CASE_DIR"
+
+echo "========================================================"
+echo " E-AluminumHeat CHT — conjugate heat transfer"
+echo " fins pointing UP, natural convection"
+echo " Heat input: ${HEAT_WATTS} W"
+echo "========================================================"
+
+echo ""
+echo ">>> [0/6] Cleaning old time directories"
+for d in $(ls 2>/dev/null | grep -E '^[1-9][0-9]*$'); do rm -rf "$d"; done
+rm -rf 0/aluminum 0/air
+
+echo ""
+echo ">>> [1/6] blockMesh"
+WM_PROJECT_DIR=/usr/share/openfoam blockMesh 2>&1 | tail -5
+
+echo ""
+echo ">>> [2/6] topoSet  (define aluminum / air cell zones)"
+WM_PROJECT_DIR=/usr/share/openfoam topoSet 2>&1 | tail -5
+
+echo ""
+echo ">>> [3/6] splitMeshRegions -cellZones -overwrite"
+WM_PROJECT_DIR=/usr/share/openfoam splitMeshRegions -cellZones -overwrite 2>&1 | tail -10
+
+echo ""
+echo "=== Aluminum boundary patches ==="
+grep -A2 "type" constant/aluminum/polyMesh/boundary | grep -v "^--$" | head -40
+
+echo ""
+echo "=== Air boundary patches ==="
+grep -A2 "type" constant/air/polyMesh/boundary | grep -v "^--$" | head -40
+
+echo ""
+echo ">>> [4/6] Setting heat-flux BC (${HEAT_WATTS} W)"
+python3 scripts/set_heat.py --watts "${HEAT_WATTS}"
+
+echo ""
+echo ">>> [5/6] Copying initial conditions from 0.orig/"
+cp -r 0.orig/aluminum 0/
+cp -r 0.orig/air      0/
+
+echo ""
+echo ">>> [6/6] chtMultiRegionFoam"
+WM_PROJECT_DIR=/usr/share/openfoam chtMultiRegionFoam 2>&1 | tee log.chtMultiRegionFoam
+
+echo ""
+echo "========================================================"
+echo " Done.  Time directories:"
+ls -d [0-9]* 2>/dev/null | sort -n
+echo "========================================================"
