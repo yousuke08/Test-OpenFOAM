@@ -19,15 +19,17 @@ import os
 
 # ── dimensions (mm) ──────────────────────────────────────────────────────────
 t      = 1.0    # wall thickness
-BW     = 12.0   # backbone total width  (original H=12mm)
-FH     = 8.0    # total height incl backbone  (original W=8mm)
-gap    = 4.5    # gap between fins  = (BW - 3*t) / 2 = 4.5 ✓
+BW     = 12.0   # backbone total width
+FH     = 8.0    # total height incl backbone
+gap    = 4.5    # gap between fins  (BW - 3*t) / 2 = 4.5 ✓
 L      = 20.0   # air margin shown (real domain = 50mm)
 
-# derived x-coordinates of fins
-x_left_fin   = 0.0              # left fin:   x=[0,   t]
-x_mid_fin    = t + gap          # middle fin: x=[5.5, 6.5]
-x_right_fin  = t + gap + t + gap  # right fin:  x=[11, 12]
+# Origin = center of backbone bottom face
+# backbone spans x=[-BW/2, +BW/2],  y=[0, t]
+x0 = -BW / 2   # -6 mm
+x_left_fin  = x0              # left fin:   x=[-6, -5]
+x_mid_fin   = -t / 2          # middle fin: x=[-0.5, 0.5]
+x_right_fin = BW/2 - t        # right fin:  x=[5, 6]
 
 # ── figure ───────────────────────────────────────────────────────────────────
 fig, ax = plt.subplots(figsize=(10, 8))
@@ -38,12 +40,12 @@ al_color = '#a0a8b8'
 al_edge  = '#d0d8e8'
 
 # Air background
-ax.add_patch(patches.Rectangle((-L, -L), BW + 2*L, FH + 2*L,
+ax.add_patch(patches.Rectangle((x0-L, -L), BW + 2*L, FH + 2*L,
     facecolor='#1a3a6e', edgecolor='gray', linewidth=0.5, alpha=0.4, zorder=1))
 
-# Air gaps between fins (inside channel)
-for x0, x1 in [(t, x_mid_fin), (x_mid_fin + t, x_right_fin)]:
-    ax.add_patch(patches.Rectangle((x0, t), x1 - x0, FH - t,
+# Air gaps between fins
+for gx0, gx1 in [(x_left_fin+t, x_mid_fin), (x_mid_fin+t, x_right_fin)]:
+    ax.add_patch(patches.Rectangle((gx0, t), gx1-gx0, FH-t,
         facecolor='#1a3a6e', edgecolor=None, alpha=0.9, zorder=2))
 
 # ── aluminum ─────────────────────────────────────────────────────────────────
@@ -51,39 +53,41 @@ def al_rect(x, y, w, h):
     ax.add_patch(patches.Rectangle((x, y), w, h,
         facecolor=al_color, edgecolor=al_edge, linewidth=0.8, zorder=3))
 
-al_rect(0, 0,        BW, t)          # backbone (full width, bottom)
-al_rect(0, 0,        t,  FH)         # left fin
-al_rect(x_mid_fin, 0, t, FH)         # middle fin
-al_rect(x_right_fin, 0, t, FH)       # right fin
+al_rect(x0, 0,         BW, t)   # backbone
+al_rect(x_left_fin,  0, t, FH)  # left fin
+al_rect(x_mid_fin,   0, t, FH)  # middle fin
+al_rect(x_right_fin, 0, t, FH)  # right fin
 
-# ── heat source marker (bottom face of backbone, y=0) ────────────────────────
-ax.plot([0, BW], [0, 0], color='#ff4040', linewidth=5, zorder=6,
+# ── heat source / origin marker ───────────────────────────────────────────────
+ax.plot([x0, x0+BW], [0, 0], color='#ff4040', linewidth=5, zorder=6,
         solid_capstyle='round', label='Heat source (y=0, backbone bottom)')
-ax.plot(0, 0, 'r*', markersize=14, zorder=7)
-ax.text(0.5, -1.8, 'Origin (0, 0)', color='#ff8080', fontsize=8)
+ax.plot(0, 0, 'r*', markersize=16, zorder=7)
+ax.text(0.4, -1.8, 'Origin (0, 0)', color='#ff8080', fontsize=9, fontweight='bold')
 
 # ── dimension annotations ─────────────────────────────────────────────────────
-def arrow(x0, y0, x1, y1, color, label, lx, ly, ha='center', va='bottom'):
-    ax.annotate('', xy=(x1, y1), xytext=(x0, y0),
+def arrow(x0a, y0a, x1a, y1a, color, label, lx, ly, ha='center', va='bottom'):
+    ax.annotate('', xy=(x1a, y1a), xytext=(x0a, y0a),
                 arrowprops=dict(arrowstyle='<->', color=color, lw=1.2))
     ax.text(lx, ly, label, color=color, fontsize=8, ha=ha, va=va)
 
-arrow(0,   -3, BW,  -3,  'cyan',    f'Backbone = {BW:.0f} mm',  BW/2,  -4.5)
-arrow(-3,   0, -3,  FH,  'cyan',    f'H = {FH:.0f} mm',         -4.5,  FH/2, ha='right', va='center')
-arrow(t,  FH+2, x_mid_fin, FH+2, 'orange', f'{gap:.1f} mm',   (t+x_mid_fin)/2, FH+3)
-arrow(x_mid_fin+t, FH+2, x_right_fin, FH+2, 'orange', f'{gap:.1f} mm', (x_mid_fin+t+x_right_fin)/2, FH+3)
-arrow(0,  FH+5, t,  FH+5, '#80ff80', f't={t:.0f}mm', t/2, FH+6)
+arrow(x0, -3, x0+BW, -3, 'cyan', f'Backbone = {BW:.0f} mm', 0, -4.5)
+arrow(x0-3, 0, x0-3, FH, 'cyan', f'H = {FH:.0f} mm', x0-4.5, FH/2, ha='right', va='center')
+arrow(x_left_fin+t, FH+2, x_mid_fin, FH+2, 'orange', f'{gap:.1f} mm',
+      (x_left_fin+t+x_mid_fin)/2, FH+3)
+arrow(x_mid_fin+t, FH+2, x_right_fin, FH+2, 'orange', f'{gap:.1f} mm',
+      (x_mid_fin+t+x_right_fin)/2, FH+3)
+arrow(x0, FH+5, x0+t, FH+5, '#80ff80', f't={t:.0f}mm', x0+t/2, FH+6)
 
 # ── domain boundary markers ───────────────────────────────────────────────────
 for v in [-L, FH+L]:
     ax.axhline(y=v, color='white', linewidth=0.5, linestyle='--', alpha=0.4)
-for v in [-L, BW+L]:
+for v in [x0-L, x0+BW+L]:
     ax.axvline(x=v, color='white', linewidth=0.5, linestyle='--', alpha=0.4)
-ax.text(-L+0.3, FH+L-1, 'Open air boundary (50mm all sides)',
+ax.text(x0-L+0.3, FH+L-1, 'Open air boundary (50mm all sides)',
         color='white', fontsize=7, alpha=0.7)
 
 # ── axis ─────────────────────────────────────────────────────────────────────
-ax.set_xlim(-L - 5, BW + L + 3)
+ax.set_xlim(x0 - L - 5, x0 + BW + L + 3)
 ax.set_ylim(-L - 7, FH + L + 4)
 ax.set_aspect('equal')
 ax.set_xlabel('x [mm]', color='white')
@@ -96,7 +100,7 @@ ax.legend(loc='upper right', fontsize=9,
           facecolor='#2a2a4e', edgecolor='gray', labelcolor='white')
 ax.set_title(
     'ALINCO FM180SL  Al E-channel  — fins pointing UP\n'
-    'Backbone=12mm wide  fin height=8mm  t=1mm  gap=4.5mm',
+    'Backbone=12mm  fin height=8mm  t=1mm  gap=4.5mm  |  Origin = backbone center',
     color='white', fontsize=11, fontweight='bold')
 
 plt.tight_layout()
