@@ -204,11 +204,15 @@ else:
     plt.colorbar(sc2, ax=ax, label="T [deg C]")
 if U_air.shape[0] > 1 and U_air.shape[0] == len(cx_air):
     step = max(1, len(cx_air) // 150)
-    spd = np.linalg.norm(U_air, axis=1)
+    spd  = np.linalg.norm(U_air, axis=1)
+    eps  = 1e-10
+    Unx  = U_air[:, 0] / (spd + eps)
+    Uny  = U_air[:, 1] / (spd + eps)
     ax.quiver(cx_air[::step], cy_air[::step],
-              U_air[::step, 0], U_air[::step, 1],
-              color='white', alpha=0.85, scale_units='xy', scale=4)
-    ax.text(-0.100, 0.102, f"|U|max = {spd.max():.3f} m/s",
+              Unx[::step], Uny[::step],
+              color='white', alpha=0.70, scale=35,
+              width=0.002, headwidth=3.5, headlength=4.5)
+    ax.text(-0.100, 0.108, f"|U|max = {spd.max():.3f} m/s",
             fontsize=7, color='black', va='top')
 for pts in al_outline:
     ax.add_patch(plt.Polygon(pts, fill=True, facecolor='gray',

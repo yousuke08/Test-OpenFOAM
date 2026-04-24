@@ -179,9 +179,13 @@ def make_frame(t):
     if U_air.shape[0] > 1:
         step = max(1, len(cx_air) // 100)
         spd  = np.linalg.norm(U_air, axis=1)
+        eps  = 1e-10
+        Unx  = U_air[:, 0] / (spd + eps)
+        Uny  = U_air[:, 1] / (spd + eps)
         ax.quiver(cx_air[::step], cy_air[::step],
-                  U_air[::step, 0], U_air[::step, 1],
-                  color='white', alpha=0.75, scale_units='xy', scale=4)
+                  Unx[::step], Uny[::step],
+                  color='white', alpha=0.70, scale=35,
+                  width=0.002, headwidth=3.5, headlength=4.5)
         ax.text(-0.100, 0.108, f"|U|max={spd.max():.3f} m/s",
                 fontsize=7, color='white', va='top')
     for pts in al_outline:
