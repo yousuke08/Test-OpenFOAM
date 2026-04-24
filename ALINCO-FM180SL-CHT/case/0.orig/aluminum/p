@@ -27,14 +27,18 @@ boundaryField
         type            calculated;
         value           uniform 101325;
     }
-    front
+
+    end
     {
-        type            empty;
+        type            calculated;
+        value           uniform 101325;
     }
-    back
+
+    symm
     {
-        type            empty;
+        type            symmetryPlane;
     }
+
     ".*_to_air"
     {
         type            calculated;

@@ -21,22 +21,22 @@ internalField   uniform 293.15;
 
 boundaryField
 {
+    // Backbone bottom — adiabatic (heat injected via fvOptions led_zone)
     base
     {
-        // gradient = Q[W] / (A[m²] * kappa[W/m/K])
-        // Updated automatically by scripts/set_heat.py before each run.
-        type            fixedGradient;
-        gradient        uniform 50.8130;   // placeholder (2.5 W default)
+        type            zeroGradient;
     }
 
-    front
+    // z=0 open end: heat conducts out along Z
+    end
     {
-        type            empty;
+        type            zeroGradient;
     }
 
-    back
+    // z=0.150 symmetry plane (LED centre)
+    symm
     {
-        type            empty;
+        type            symmetryPlane;
     }
 
     // Coupled interface to air region (name assigned by splitMeshRegions)

@@ -21,51 +21,15 @@ internalField   uniform 101325;
 
 boundaryField
 {
-    top
-    {
-        type            calculated;
-        value           uniform 101325;
-    }
+    top         { type calculated; value uniform 101325; }
+    left_open   { type calculated; value uniform 101325; }
+    right_open  { type calculated; value uniform 101325; }
+    lower_side  { type calculated; value uniform 101325; }
+    bottom      { type calculated; value uniform 101325; }
+    end         { type calculated; value uniform 101325; }
+    symm        { type symmetryPlane; }
 
-    left_open
-    {
-        type            calculated;
-        value           uniform 101325;
-    }
-
-    right_open
-    {
-        type            calculated;
-        value           uniform 101325;
-    }
-
-    lower_side
-    {
-        type            calculated;
-        value           uniform 101325;
-    }
-
-    bottom
-    {
-        type            calculated;
-        value           uniform 101325;
-    }
-
-    front
-    {
-        type            empty;
-    }
-
-    back
-    {
-        type            empty;
-    }
-
-    ".*_to_aluminum"
-    {
-        type            calculated;
-        value           uniform 101325;
-    }
+    ".*_to_aluminum" { type calculated; value uniform 101325; }
 }
 
 // ************************************************************************* //

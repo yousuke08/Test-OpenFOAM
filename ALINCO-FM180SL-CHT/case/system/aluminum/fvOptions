@@ -9,27 +9,34 @@ FoamFile
 {
     version     2.0;
     format      ascii;
-    class       volScalarField;
-    location    "0/air";
-    object      alphat;
+    class       dictionary;
+    location    "system/aluminum";
+    object      fvOptions;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+//
+// LED heat source: 1.25 W in the half-model (= 2.5 W total for full heatsink)
+// Applied to backbone cells in led_zone (x=[-6,6]mm, y=[0,1]mm, z=[140,150]mm)
+// Updated by scripts/set_heat.py (value after "h (" on the injectionRateSuSp line)
+//
 
-dimensions      [1 -1 -1 0 0 0 0];
-
-internalField   uniform 0;
-
-boundaryField
+ledHeatSource
 {
-    top         { type calculated; value uniform 0; }
-    left_open   { type calculated; value uniform 0; }
-    right_open  { type calculated; value uniform 0; }
-    lower_side  { type calculated; value uniform 0; }
-    bottom      { type calculated; value uniform 0; }
-    end         { type calculated; value uniform 0; }
-    symm        { type symmetryPlane; }
+    type            scalarSemiImplicitSource;
+    active          yes;
 
-    ".*_to_aluminum" { type calculated; value uniform 0; }
+    scalarSemiImplicitSourceCoeffs
+    {
+        selectionMode   cellZone;
+        cellZone        led_zone;
+
+        volumeMode      absolute;   // total W, not W/m³
+
+        injectionRateSuSp
+        {
+            h           (1.2500 0);   // HEAT_WATTS/2  [W for half-model]
+        }
+    }
 }
 
 // ************************************************************************* //

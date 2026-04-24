@@ -23,7 +23,6 @@ boundaryField
 {
     top
     {
-        // Open top: velocity driven by pressure gradient
         type            pressureInletOutletVelocity;
         value           uniform (0 0 0);
     }
@@ -51,17 +50,17 @@ boundaryField
         value           uniform (0 0 0);
     }
 
-    front
+    end
     {
-        type            empty;
+        type            pressureInletOutletVelocity;
+        value           uniform (0 0 0);
     }
 
-    back
+    symm
     {
-        type            empty;
+        type            symmetryPlane;
     }
 
-    // All walls (fin surfaces, backbone top, gap walls)
     ".*_to_aluminum"
     {
         type            noSlip;

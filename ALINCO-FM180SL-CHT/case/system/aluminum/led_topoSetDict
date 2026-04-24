@@ -9,27 +9,36 @@ FoamFile
 {
     version     2.0;
     format      ascii;
-    class       volScalarField;
-    location    "0/air";
-    object      alphat;
+    class       dictionary;
+    location    "system/aluminum";
+    object      led_topoSetDict;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+//
+// LED zone: backbone cells in the last 10 mm of the half-model (z=[0.140,0.150])
+// Full backbone width x=[-0.006, 0.006], thickness y=[0, 0.001]
+// Corresponds to 20 mm total (both sides of symmetry plane)
+//
 
-dimensions      [1 -1 -1 0 0 0 0];
-
-internalField   uniform 0;
-
-boundaryField
-{
-    top         { type calculated; value uniform 0; }
-    left_open   { type calculated; value uniform 0; }
-    right_open  { type calculated; value uniform 0; }
-    lower_side  { type calculated; value uniform 0; }
-    bottom      { type calculated; value uniform 0; }
-    end         { type calculated; value uniform 0; }
-    symm        { type symmetryPlane; }
-
-    ".*_to_aluminum" { type calculated; value uniform 0; }
-}
+actions
+(
+    {
+        name    led_zone;
+        type    cellSet;
+        action  new;
+        source  boxToCell;
+        sourceInfo
+        {
+            box (-0.006 0 0.140)(0.006 0.001 0.150);
+        }
+    }
+    {
+        name    led_zone;
+        type    cellZoneSet;
+        action  new;
+        source  setToCellZone;
+        sourceInfo { set led_zone; }
+    }
+);
 
 // ************************************************************************* //

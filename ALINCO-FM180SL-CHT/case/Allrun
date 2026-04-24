@@ -1,4 +1,5 @@
 #!/bin/bash
+# 3-D LED heatsink model — half-model with symmetry at z=0.150 m
 # Usage: bash Allrun               → default 2.5 W
 #        HEAT_WATTS=5 bash Allrun  → custom heat input
 set -e
@@ -6,53 +7,51 @@ set -e
 export WM_PROJECT_DIR=/usr/share/openfoam
 
 HEAT_WATTS="${HEAT_WATTS:-2.5}"
+HALF_WATTS=$(python3 -c "print(${HEAT_WATTS}/2)")
 
 CASE_DIR="$(cd "$(dirname "$0")" && pwd)"
 cd "$CASE_DIR"
 
 echo "========================================================"
-echo " ALINCO FM180SL CHT — conjugate heat transfer"
-echo " E-channel Al heatsink, fins pointing UP"
-echo " Natural convection, 100mm air margin all sides"
-echo " Heat input: ${HEAT_WATTS} W"
+echo " ALINCO FM180SL CHT — 3-D LED point source"
+echo " E-channel Al heatsink, fins UP, half-model (z-symm)"
+echo " LED heat input: ${HEAT_WATTS} W total (${HALF_WATTS} W in half-model)"
+echo " LED zone: backbone x=[-6,6]mm, z=[140,150]mm (half)"
 echo "========================================================"
 
 echo ""
-echo ">>> [0/6] Cleaning old time directories"
+echo ">>> [0/7] Cleaning old time directories"
 for d in $(ls 2>/dev/null | grep -E '^[1-9][0-9]*$'); do rm -rf "$d"; done
 rm -rf 0/aluminum 0/air
 
 echo ""
-echo ">>> [1/6] blockMesh"
+echo ">>> [1/7] blockMesh"
 WM_PROJECT_DIR=/usr/share/openfoam blockMesh 2>&1 | tail -5
 
 echo ""
-echo ">>> [2/6] topoSet  (define aluminum / air cell zones)"
+echo ">>> [2/7] topoSet  (aluminum / air cell zones)"
 WM_PROJECT_DIR=/usr/share/openfoam topoSet 2>&1 | tail -5
 
 echo ""
-echo ">>> [3/6] splitMeshRegions -cellZones -overwrite"
+echo ">>> [3/7] splitMeshRegions -cellZones -overwrite"
 WM_PROJECT_DIR=/usr/share/openfoam splitMeshRegions -cellZones -overwrite 2>&1 | tail -10
 
 echo ""
-echo "=== Aluminum boundary patches ==="
-grep -A2 "type" constant/aluminum/polyMesh/boundary | grep -v "^--$" | head -40
+echo ">>> [4/7] topoSet: create LED heat zone in aluminum region"
+WM_PROJECT_DIR=/usr/share/openfoam topoSet -region aluminum \
+    -dict "${CASE_DIR}/system/aluminum/led_topoSetDict" 2>&1 | tail -5
 
 echo ""
-echo "=== Air boundary patches ==="
-grep -A2 "type" constant/air/polyMesh/boundary | grep -v "^--$" | head -40
-
-echo ""
-echo ">>> [4/6] Setting heat-flux BC (${HEAT_WATTS} W)"
+echo ">>> [5/7] Setting LED heat source to ${HEAT_WATTS} W (${HALF_WATTS} W half-model)"
 python3 scripts/set_heat.py --watts "${HEAT_WATTS}"
 
 echo ""
-echo ">>> [5/6] Copying initial conditions from 0.orig/"
+echo ">>> [6/7] Copying initial conditions from 0.orig/"
 cp -r 0.orig/aluminum 0/
 cp -r 0.orig/air      0/
 
 echo ""
-echo ">>> [6/6] chtMultiRegionFoam"
+echo ">>> [7/7] chtMultiRegionFoam"
 WM_PROJECT_DIR=/usr/share/openfoam chtMultiRegionFoam 2>&1 | tee log.chtMultiRegionFoam
 
 echo ""
