@@ -23,7 +23,6 @@ boundaryField
 {
     top
     {
-        // Open boundary: air enters at ambient, exits freely
         type            inletOutlet;
         inletValue      uniform 293.15;
         value           uniform 293.15;
@@ -55,17 +54,18 @@ boundaryField
         value           uniform 293.15;
     }
 
-    front
+    end
     {
-        type            empty;
+        type            inletOutlet;
+        inletValue      uniform 293.15;
+        value           uniform 293.15;
     }
 
-    back
+    symm
     {
-        type            empty;
+        type            symmetryPlane;
     }
 
-    // Coupled interface to aluminum region
     ".*_to_aluminum"
     {
         type            compressible::turbulentTemperatureCoupledBaffleMixed;

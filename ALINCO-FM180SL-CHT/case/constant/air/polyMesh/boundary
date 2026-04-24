@@ -20,54 +20,53 @@ FoamFile
     left_open
     {
         type            patch;
-        nFaces          28;
-        startFace       1361;
+        nFaces          420;
+        startFace       30579;
     }
     right_open
     {
         type            patch;
-        nFaces          28;
-        startFace       1389;
+        nFaces          420;
+        startFace       30999;
     }
     lower_side
     {
         type            wall;
         inGroups        1(wall);
-        nFaces          20;
-        startFace       1417;
+        nFaces          300;
+        startFace       31419;
     }
     bottom
     {
         type            patch;
-        nFaces          20;
-        startFace       1437;
+        nFaces          300;
+        startFace       31719;
     }
     top
     {
         type            patch;
-        nFaces          31;
-        startFace       1457;
+        nFaces          465;
+        startFace       32019;
     }
-    front
+    end
     {
-        type            empty;
-        inGroups        1(empty);
+        type            patch;
         nFaces          726;
-        startFace       1488;
+        startFace       32484;
     }
-    back
+    symm
     {
-        type            empty;
-        inGroups        1(empty);
+        type            symmetryPlane;
+        inGroups        1(symmetryPlane);
         nFaces          726;
-        startFace       2214;
+        startFace       33210;
     }
     air_to_aluminum
     {
         type            mappedWall;
         inGroups        1(wall);
-        nFaces          55;
-        startFace       2940;
+        nFaces          825;
+        startFace       33936;
         sampleMode      nearestPatchFace;
         sampleRegion    aluminum;
         samplePatch     aluminum_to_air;

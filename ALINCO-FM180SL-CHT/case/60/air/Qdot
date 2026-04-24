@@ -47,13 +47,14 @@ boundaryField
         type            calculated;
         value           uniform 0;
     }
-    front
+    end
     {
-        type            empty;
+        type            calculated;
+        value           uniform 0;
     }
-    back
+    symm
     {
-        type            empty;
+        type            symmetryPlane;
     }
     air_to_aluminum
     {

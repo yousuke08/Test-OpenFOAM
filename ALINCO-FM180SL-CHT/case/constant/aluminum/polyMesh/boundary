@@ -19,30 +19,30 @@ FoamFile
 (
     base
     {
+        type            wall;
+        inGroups        1(wall);
+        nFaces          165;
+        startFace       913;
+    }
+    end
+    {
         type            patch;
-        nFaces          11;
-        startFace       31;
-    }
-    front
-    {
-        type            empty;
-        inGroups        1(empty);
         nFaces          32;
-        startFace       42;
+        startFace       1078;
     }
-    back
+    symm
     {
-        type            empty;
-        inGroups        1(empty);
+        type            symmetryPlane;
+        inGroups        1(symmetryPlane);
         nFaces          32;
-        startFace       74;
+        startFace       1110;
     }
     aluminum_to_air
     {
         type            mappedWall;
         inGroups        1(wall);
-        nFaces          55;
-        startFace       106;
+        nFaces          825;
+        startFace       1142;
         sampleMode      nearestPatchFace;
         sampleRegion    air;
         samplePatch     air_to_aluminum;

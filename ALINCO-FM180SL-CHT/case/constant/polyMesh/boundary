@@ -19,54 +19,54 @@ FoamFile
 (
     base
     {
-        type            patch;
-        nFaces          11;
-        startFace       1447;
+        type            wall;
+        inGroups        1(wall);
+        nFaces          165;
+        startFace       32317;
     }
     left_open
     {
         type            patch;
-        nFaces          28;
-        startFace       1458;
+        nFaces          420;
+        startFace       32482;
     }
     right_open
     {
         type            patch;
-        nFaces          28;
-        startFace       1486;
+        nFaces          420;
+        startFace       32902;
     }
     lower_side
     {
         type            wall;
         inGroups        1(wall);
-        nFaces          20;
-        startFace       1514;
+        nFaces          300;
+        startFace       33322;
     }
     bottom
     {
         type            patch;
-        nFaces          20;
-        startFace       1534;
+        nFaces          300;
+        startFace       33622;
     }
     top
     {
         type            patch;
-        nFaces          31;
-        startFace       1554;
+        nFaces          465;
+        startFace       33922;
     }
-    front
+    end
     {
-        type            empty;
-        inGroups        1(empty);
+        type            patch;
         nFaces          758;
-        startFace       1585;
+        startFace       34387;
     }
-    back
+    symm
     {
-        type            empty;
-        inGroups        1(empty);
+        type            symmetryPlane;
+        inGroups        1(symmetryPlane);
         nFaces          758;
-        startFace       2343;
+        startFace       35145;
     }
 )
 

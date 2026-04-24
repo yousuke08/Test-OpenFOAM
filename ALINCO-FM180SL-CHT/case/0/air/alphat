@@ -14,8 +14,6 @@ FoamFile
     object      alphat;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
-//
-// Turbulent thermal diffusivity — zero for laminar flow
 
 dimensions      [1 -1 -1 0 0 0 0];
 
@@ -23,51 +21,15 @@ internalField   uniform 0;
 
 boundaryField
 {
-    top
-    {
-        type            calculated;
-        value           uniform 0;
-    }
+    top         { type calculated; value uniform 0; }
+    left_open   { type calculated; value uniform 0; }
+    right_open  { type calculated; value uniform 0; }
+    lower_side  { type calculated; value uniform 0; }
+    bottom      { type calculated; value uniform 0; }
+    end         { type calculated; value uniform 0; }
+    symm        { type symmetryPlane; }
 
-    left_open
-    {
-        type            calculated;
-        value           uniform 0;
-    }
-
-    right_open
-    {
-        type            calculated;
-        value           uniform 0;
-    }
-
-    lower_side
-    {
-        type            calculated;
-        value           uniform 0;
-    }
-
-    bottom
-    {
-        type            calculated;
-        value           uniform 0;
-    }
-
-    front
-    {
-        type            empty;
-    }
-
-    back
-    {
-        type            empty;
-    }
-
-    ".*_to_aluminum"
-    {
-        type            calculated;
-        value           uniform 0;
-    }
+    ".*_to_aluminum" { type calculated; value uniform 0; }
 }
 
 // ************************************************************************* //

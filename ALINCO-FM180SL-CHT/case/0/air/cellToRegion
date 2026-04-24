@@ -42,13 +42,13 @@ boundaryField
     {
         type            zeroGradient;
     }
-    front
+    end
     {
-        type            empty;
+        type            zeroGradient;
     }
-    back
+    symm
     {
-        type            empty;
+        type            symmetryPlane;
     }
     air_to_aluminum
     {
