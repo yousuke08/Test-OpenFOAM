@@ -214,7 +214,7 @@ for pts in al_outline:
     ax.add_patch(plt.Polygon(pts, fill=True, facecolor='gray',
                              edgecolor='white', linewidth=0.8, alpha=0.5))
 ax.set_xlabel("x [m]"); ax.set_ylabel("y [m]")
-ax.set_xlim(-0.112, 0.112); ax.set_ylim(-0.005, 0.115)
+ax.set_xlim(-0.112, 0.112); ax.set_ylim(-0.055, 0.115)
 ax.set_aspect("equal")
 
 plt.tight_layout()

@@ -22,17 +22,22 @@ internalField   uniform 0;
 
 boundaryField
 {
-    base_side
-    {
-        type            calculated;
-        value           uniform 0;
-    }
     left_open
     {
         type            calculated;
         value           uniform 0;
     }
     right_open
+    {
+        type            calculated;
+        value           uniform 0;
+    }
+    lower_side
+    {
+        type            calculated;
+        value           uniform 0;
+    }
+    bottom
     {
         type            calculated;
         value           uniform 0;

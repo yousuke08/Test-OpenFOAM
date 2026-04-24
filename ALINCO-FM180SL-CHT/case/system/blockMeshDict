@@ -118,6 +118,18 @@ vertices
     ( 0.005   0.108  0.02)  // 61
     ( 0.006   0.108  0.02)  // 62
     ( 0.106   0.108  0.02)  // 63
+
+    // ── lower air  y=-0.050, z=0 ────────────────────────────────────────────
+    (-0.106  -0.050  0)     // 64
+    (-0.006  -0.050  0)     // 65
+    ( 0.006  -0.050  0)     // 66
+    ( 0.106  -0.050  0)     // 67
+
+    // ── lower air  y=-0.050, z=0.02 ─────────────────────────────────────────
+    (-0.106  -0.050  0.02)  // 68
+    (-0.006  -0.050  0.02)  // 69
+    ( 0.006  -0.050  0.02)  // 70
+    ( 0.106  -0.050  0.02)  // 71
 );
 
 // Notation: hex(v0 v1 v2 v3  v4 v5 v6 v7) (nx ny 1)
@@ -171,6 +183,10 @@ blocks
     hex (20 21 29 28  52 53 61 60) ( 4 10 1) simpleGrading (1 1 1)
     hex (21 22 30 29  53 54 62 61) ( 1 10 1) simpleGrading (1 1 1)
     hex (22 23 31 30  54 55 63 62) (10 10 1) simpleGrading (1 1 1)
+
+    // ── Lower air (heatsink centred in space): y=[-0.050, 0.000] ────────────
+    hex (64 65  1  0  68 69 33 32) (10 10 1) simpleGrading (1 1 1)
+    hex (66 67  7  6  70 71 39 38) (10 10 1) simpleGrading (1 1 1)
 );
 
 boundary
@@ -189,23 +205,13 @@ boundary
         );
     }
 
-    // Bottom face of left/right air side blocks (wall / adiabatic)
-    base_side
-    {
-        type patch;
-        faces
-        (
-            ( 0 32 33  1)   // xi=0 left air
-            ( 6 38 39  7)   // xi=6 right air
-        );
-    }
-
     // Left open boundary  x=-0.106  (outward normal = -x)
     left_open
     {
         type patch;
         faces
         (
+            (64 68 32  0)   // lower air
             ( 0 32 40  8)   // yi=0
             ( 8 40 48 16)   // yi=1
             (16 48 56 24)   // yi=2
@@ -218,9 +224,32 @@ boundary
         type patch;
         faces
         (
+            (67  7 39 71)   // lower air
             ( 7 15 47 39)   // yi=0
             (15 23 55 47)   // yi=1
             (23 31 63 55)   // yi=2
+        );
+    }
+
+    // Inner vertical walls of lower air columns (x=±0.006, y=[-0.050,0])
+    lower_side
+    {
+        type wall;
+        faces
+        (
+            (65  1 33 69)   // right wall of lower-left block
+            (66 70 38  6)   // left wall of lower-right block
+        );
+    }
+
+    // Bottom open boundary  y=-0.050  (outward normal = -y)
+    bottom
+    {
+        type patch;
+        faces
+        (
+            (64 68 69 65)   // lower-left
+            (66 70 71 67)   // lower-right
         );
     }
 
@@ -246,6 +275,9 @@ boundary
         type empty;
         faces
         (
+            // lower air
+            (64  0  1 65)
+            (66  6  7 67)
             // yi=0
             ( 0  8  9  1)
             ( 1  9 10  2)
@@ -279,6 +311,9 @@ boundary
         type empty;
         faces
         (
+            // lower air
+            (68 69 33 32)
+            (70 71 39 38)
             // yi=0
             (32 33 41 40)
             (33 34 42 41)

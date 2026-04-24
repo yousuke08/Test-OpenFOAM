@@ -44,9 +44,15 @@ boundaryField
         value           uniform 101325;
     }
 
-    base_side
+    lower_side
     {
         type            fixedFluxPressure;
+        value           uniform 101325;
+    }
+
+    bottom
+    {
+        type            fixedValue;
         value           uniform 101325;
     }
 

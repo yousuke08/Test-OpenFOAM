@@ -39,7 +39,13 @@ boundaryField
         value           uniform 101325;
     }
 
-    base_side
+    lower_side
+    {
+        type            calculated;
+        value           uniform 101325;
+    }
+
+    bottom
     {
         type            calculated;
         value           uniform 101325;

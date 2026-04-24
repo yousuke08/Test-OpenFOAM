@@ -15,52 +15,59 @@ FoamFile
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-7
+8
 (
-    base_side
-    {
-        type            patch;
-        nFaces          20;
-        startFace       981;
-    }
     left_open
     {
         type            patch;
-        nFaces          18;
-        startFace       1001;
+        nFaces          28;
+        startFace       1361;
     }
     right_open
     {
         type            patch;
-        nFaces          18;
-        startFace       1019;
+        nFaces          28;
+        startFace       1389;
+    }
+    lower_side
+    {
+        type            wall;
+        inGroups        1(wall);
+        nFaces          20;
+        startFace       1417;
+    }
+    bottom
+    {
+        type            patch;
+        nFaces          20;
+        startFace       1437;
     }
     top
     {
         type            patch;
         nFaces          31;
-        startFace       1037;
+        startFace       1457;
     }
     front
     {
         type            empty;
         inGroups        1(empty);
-        nFaces          526;
-        startFace       1068;
+        nFaces          726;
+        startFace       1488;
     }
     back
     {
         type            empty;
         inGroups        1(empty);
-        nFaces          526;
-        startFace       1594;
+        nFaces          726;
+        startFace       2214;
     }
     air_to_aluminum
     {
         type            mappedWall;
         inGroups        1(wall);
         nFaces          55;
-        startFace       2120;
+        startFace       2940;
         sampleMode      nearestPatchFace;
         sampleRegion    aluminum;
         samplePatch     aluminum_to_air;

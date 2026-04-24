@@ -98,6 +98,20 @@ actions
     }
     {
         name    air;
+        type    cellSet;
+        action  add;
+        source  boxToCell;
+        sourceInfo { box (-0.106 -0.050 -1)(-0.006 0 1); }      // lower-left air
+    }
+    {
+        name    air;
+        type    cellSet;
+        action  add;
+        source  boxToCell;
+        sourceInfo { box (0.006 -0.050 -1)(0.106 0 1); }        // lower-right air
+    }
+    {
+        name    air;
         type    cellZoneSet;
         action  new;
         source  setToCellZone;

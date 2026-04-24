@@ -22,15 +22,19 @@ internalField   uniform 0;
 
 boundaryField
 {
-    base_side
-    {
-        type            zeroGradient;
-    }
     left_open
     {
         type            zeroGradient;
     }
     right_open
+    {
+        type            zeroGradient;
+    }
+    lower_side
+    {
+        type            zeroGradient;
+    }
+    bottom
     {
         type            zeroGradient;
     }

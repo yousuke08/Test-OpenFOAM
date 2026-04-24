@@ -43,9 +43,16 @@ boundaryField
         value           uniform 293.15;
     }
 
-    base_side
+    lower_side
     {
         type            zeroGradient;
+    }
+
+    bottom
+    {
+        type            inletOutlet;
+        inletValue      uniform 293.15;
+        value           uniform 293.15;
     }
 
     front
